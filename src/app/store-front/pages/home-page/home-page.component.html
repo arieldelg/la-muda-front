@@ -1,14 +1,16 @@
+@if (reviewResource.hasValue()) {
 <h1 class="text-2xl sm:text-4xl lg:text-6xl font-bold font-mono text-center">
   Bienvenido a esta pagina, aqui encontratras todos los lugares con mejor
   Ranking en Hermosillo
 </h1>
 <section class="font-mono mt-12 flex flex-col gap-y-8">
   <h2 class="text-2xl font-bold">Lugares para comer</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    <store-card />
-    <store-card />
-    <store-card />
-    <store-card />
-    <store-card />
+  <div
+    class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4"
+  >
+    @for (review of reviewResource.value().data; track review.id) {
+    <store-card [review]="review" />
+    }
   </div>
 </section>
+}

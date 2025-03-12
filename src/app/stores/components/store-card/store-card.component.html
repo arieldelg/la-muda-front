@@ -1,28 +1,33 @@
-<div class="card bg-base-100 w-96 shadow-sm">
+<div class="card bg-base-100 min-w-64 shadow-sm h-96">
   <figure class="">
     <img
-      src="https://res.cloudinary.com/projectsspookyd/image/upload/v1741652214/little-ceaser_hg8h6q.jpg"
-      alt="Little Ceaser"
-      class="object-cover w-96 h-60 object-[30%_30%]"
+      [src]="review().image"
+      [alt]="review().title"
+      class="object-cover w-full h-60 object-[30%_30%]"
     />
   </figure>
-  <div class="card-body gap-y-4">
-    <h1 class="card-title">
-      Little Ceaser
-      <div class="badge badge-secondary">NEW</div>
-    </h1>
-    <div class="grid grid-cols-4">
-      <p class="col-span-3 pr-4">
-        Para comida rapida y para esos dias donde el tiempo extra te lo pagan
-        con especie, este lugar es para ti.
-      </p>
-      <div class="card-actions">
-        <button class="btn btn-primary">Mas Detalles</button>
+  <div class="card-body gap-y-4 h-[220px]">
+    <a class="card-title" [routerLink]="['/store', review().id]">
+      <span class="hover:underline">
+        {{ review().title }}
+      </span>
+      <div class="badge badge-secondary">{{ review().badge }}</div>
+    </a>
+    <p class="pr-4 text-sm leading-4" [title]="review().description">
+      {{ review().description }}
+    </p>
+    <div class="card-actions justify-between">
+      <button
+        class="btn btn-secondary max-w-28 h-6"
+        [routerLink]="['/store', review().id]"
+      >
+        Mas
+      </button>
+      <div class="space-x-3">
+        @for (tag of review().tags; track tag) {
+        <div class="badge badge-outline">{{ tag }}</div>
+        }
       </div>
-    </div>
-    <div class="card-actions justify-end">
-      <div class="badge badge-outline">Chatarra</div>
-      <div class="badge badge-outline">Pizza</div>
     </div>
   </div>
 </div>
