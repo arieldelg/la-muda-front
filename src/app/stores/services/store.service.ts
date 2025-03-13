@@ -44,7 +44,10 @@ export class StoreService {
           data: resp.reviews,
           totalPage: resp.total,
         })),
-        catchError((err) => of({ ok: false, totalPage: 0, err }))
+        catchError((err) => {
+          this.reviewsCache.clear();
+          return of({ ok: false, totalPage: 0, err });
+        })
       );
   }
 
@@ -55,7 +58,10 @@ export class StoreService {
     return this.http.get<Review>(`${environment.API_HOST}/${id}`).pipe(
       tap((resp) => this.reviewCache.set(id, { ok: true, data: resp })),
       map((resp) => ({ ok: true, data: resp })),
-      catchError((err) => of({ ok: false, err }))
+      catchError((err) => {
+        this.reviewCache.clear();
+        return of({ ok: false, err });
+      })
     );
   }
 }

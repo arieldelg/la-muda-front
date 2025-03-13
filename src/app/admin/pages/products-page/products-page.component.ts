@@ -1,12 +1,11 @@
-import { CustomImagePipe } from '@/stores/pipes/custom-image.pipe';
 import { StoreService } from '@/stores/services/store.service';
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { TableProductsComponent } from '../../components/table-products/table-products.component';
 
 @Component({
   selector: 'products-page',
-  imports: [CustomImagePipe, RouterLink],
+  imports: [TableProductsComponent],
   templateUrl: './products-page.component.html',
   styles: ``,
 })

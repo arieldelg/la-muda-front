@@ -7,7 +7,7 @@ export interface Review {
   badge: string;
   description: string;
   id: string;
-  image: string;
+  images: string[];
   tags: string[];
   title: string;
 }

@@ -1,7 +1,7 @@
 <div class="card bg-base-100 min-w-64 shadow-sm h-96">
   <figure class="">
     <img
-      [src]="review().image"
+      [src]="review().images | customImage"
       [alt]="review().title"
       class="object-cover w-full h-60 object-[30%_30%]"
     />

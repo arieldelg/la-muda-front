@@ -1,0 +1,65 @@
+<div class="overflow-x-auto">
+  <table class="table">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th id="table-head">
+          <input type="checkbox" id="checkbox" class="checkbox" />
+        </th>
+        <th scope="col">Image</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- row 1 -->
+      @for (review of reviews(); track review.id) {
+      <tr>
+        <th>
+          <label>
+            <input type="checkbox" class="checkbox" />
+          </label>
+        </th>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle h-12 w-12">
+                <img [src]="review.images | customImage" [alt]="review.title" />
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {{ review.title }}
+          <br />
+          <p class="badge badge-ghost badge-sm">
+            @for (tag of review.tags; track tag) {
+            <span>{{ tag }}</span>
+            }
+          </p>
+        </td>
+        <td class="max-w-60">{{ review.description }}</td>
+        <th>
+          <button
+            class="btn btn-ghost btn-xs"
+            [routerLink]="['/admin/products', review.id]"
+          >
+            Mas detalles...
+          </button>
+        </th>
+      </tr>
+      }
+    </tbody>
+    <!-- foot -->
+    <!-- <tfoot>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Job</th>
+          <th>Favorite Color</th>
+          <th></th>
+        </tr>
+      </tfoot> -->
+  </table>
+</div>

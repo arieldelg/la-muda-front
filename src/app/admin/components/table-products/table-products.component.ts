@@ -4,11 +4,10 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'store-card',
+  selector: 'admin-table-products',
   imports: [RouterLink, CustomImagePipe],
-  templateUrl: './store-card.component.html',
-  styles: ``,
+  templateUrl: './table-products.component.html',
 })
-export class StoreCardComponent {
-  public review = input.required<Review>();
+export class TableProductsComponent {
+  public reviews = input<Review[]>();
 }
