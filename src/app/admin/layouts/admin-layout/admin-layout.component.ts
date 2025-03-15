@@ -28,5 +28,10 @@ export class AdminLayoutComponent {
       title: 'Registro Producto',
       icon: 'app_registration',
     },
+    {
+      path: '/',
+      title: 'Tienda',
+      icon: 'home',
+    },
   ]);
 }

@@ -2,10 +2,11 @@ import { StoreService } from '@/stores/services/store.service';
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TableProductsComponent } from '../../components/table-products/table-products.component';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'products-page',
-  imports: [TableProductsComponent],
+  imports: [TableProductsComponent, LoadingComponent],
   templateUrl: './products-page.component.html',
   styles: ``,
 })

@@ -11,7 +11,9 @@
       <span class="hover:underline">
         {{ review().title }}
       </span>
+      @if (review().badge) {
       <div class="badge badge-secondary">{{ review().badge }}</div>
+      }
     </a>
     <p class="pr-4 text-sm leading-4" [title]="review().description">
       {{ review().description }}

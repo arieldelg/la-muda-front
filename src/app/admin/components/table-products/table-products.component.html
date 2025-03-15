@@ -33,13 +33,15 @@
         <td>
           {{ review.title }}
           <br />
-          <p class="badge badge-ghost badge-sm">
+          <p class="badge badge-ghost badge-sm max-w-64 flex flex-wrap h-fit">
             @for (tag of review.tags; track tag) {
-            <span>{{ tag }}</span>
+            <span class="">{{ tag }}</span>
             }
           </p>
         </td>
-        <td class="max-w-60">{{ review.description }}</td>
+        <td class="max-w-60 break-words">
+          {{ review.description }}
+        </td>
         <th>
           <button
             class="btn btn-ghost btn-xs"
@@ -51,15 +53,5 @@
       </tr>
       }
     </tbody>
-    <!-- foot -->
-    <!-- <tfoot>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Job</th>
-          <th>Favorite Color</th>
-          <th></th>
-        </tr>
-      </tfoot> -->
   </table>
 </div>

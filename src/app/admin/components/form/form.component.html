@@ -1,20 +1,33 @@
-<h1 class="text-2xl font-bold">Nuevo Producto</h1>
-<div class="divider"></div>
+@if (throwError().length > 0) {
+<div role="alert" class="alert alert-error absolute bottom-5 px-10 mr-5">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-6 w-6 shrink-0 stroke-current"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+  <span>{{ throwError() }}</span>
+</div>
+}
 
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
-  class="grid grid-cols-1 2xl:grid-cols-2 w-full max-w-5xl place-self-center gap-12"
+  class="grid grid-cols-1 2xl:grid-cols-2 w-full max-w-7xl place-self-center gap-12"
 >
   <!-- Datos generales -->
   <div class="flex flex-col gap-2">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-bold h-12">Datos generales</h2>
+      <h1 class="text-2xl font-bold h-12">Datos generales</h1>
       <div class="flex justify-end h-12">
-        <button class="btn btn-secondary w-40" type="submit">
-          <!-- <span class="loading loading-spinner loading-sm"></span> -->
-          Guardar
-        </button>
+        <button class="btn btn-secondary w-40" type="submit">Guardar</button>
       </div>
     </div>
     <div class="space-y-1">
@@ -22,10 +35,12 @@
         formControlName="title"
         type="text"
         placeholder="Título"
-        [class.border-red-500]="validatorService.getErrors('title', form)"
+        [class.border-red-500]="
+          validatorService.getErrors('title', form, onSubmitForm())
+        "
         class="input input-bordered w-full"
       />
-      @if (validatorService.getErrors('title', form)) {
+      @if (validatorService.getErrors('title', form, onSubmitForm())) {
       <div role="alert" class="alert alert-error alert-soft">
         <span>{{ validatorService.getMessageError("title", form) }}</span>
       </div>
@@ -36,10 +51,12 @@
         formControlName="badge"
         type="text"
         placeholder="badge"
-        [class.border-red-500]="validatorService.getErrors('badge', form)"
+        [class.border-red-500]="
+          validatorService.getErrors('badge', form, onSubmitForm())
+        "
         class="input input-bordered w-full"
       />
-      @if (validatorService.getErrors('badge', form)) {
+      @if (validatorService.getErrors('badge', form, onSubmitForm())) {
       <div role="alert" class="alert alert-error alert-soft">
         <span>{{ validatorService.getMessageError("badge", form) }}</span>
       </div>
@@ -50,10 +67,12 @@
         formControlName="description"
         class="textarea textarea-bordered w-full"
         placeholder="Descripción"
-        [class.border-red-500]="validatorService.getErrors('description', form)"
+        [class.border-red-500]="
+          validatorService.getErrors('description', form, onSubmitForm())
+        "
         rows="6"
       ></textarea>
-      @if (validatorService.getErrors('description', form)) {
+      @if (validatorService.getErrors('description', form, onSubmitForm())) {
       <div role="alert" class="alert alert-error alert-soft">
         <span>{{ validatorService.getMessageError("description", form) }}</span>
       </div>
@@ -74,6 +93,7 @@
             [formControl]="addTag"
             (keydown.enter)="onAddTag()"
             (keydown.enter)="$event.preventDefault()"
+            maxlength="15"
           />
         </label>
       </div>
@@ -126,9 +146,29 @@
     </div>
   </div>
   <!-- Imágenes -->
-  <div class="flex flex-col gap-2 justify-center w-full items-center">
-    <!-- <product-carousel [images]="productResources.value().data?.image" /> -->
-    <shared-carousel-images />
-    <input type="file" class="file-input file-input-bordered w-full mt-4" />
+  <div
+    class="flex flex-col gap-2 justify-center 2xl:justify-start w-full items-center"
+  >
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      class="file-input file-input-bordered w-full"
+      (change)="onFilesChanged($event)"
+      #inputImg
+    />
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-3 gap-4 my-4"
+    >
+      @for (image of blobImage(); track $index; let i = $index) {
+      <img
+        [src]="image"
+        [alt]="i"
+        class="w-full h-full object-cover rounded-2xl"
+      />
+      }
+    </div>
   </div>
 </form>
+
+{{ form.controls["tags"].errors | json }}

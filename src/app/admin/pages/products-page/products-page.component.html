@@ -1,3 +1,10 @@
-@if (reviewResource.hasValue()) {
+@if(reviewResource.isLoading()){
+<shared-loading />
+} @if (reviewResource.hasValue()) {
+<h1
+  class="font-mono text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-6"
+>
+  Todos los Productos
+</h1>
 <admin-table-products [reviews]="reviewResource.value().data" />
 }

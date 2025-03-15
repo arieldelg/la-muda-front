@@ -1,21 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormComponent } from '../../components/form/form.component';
+import { StoreService } from '@/stores/services/store.service';
+import { SendFormInt } from '@/stores/interfaces/store.interface';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-register-page',
-  imports: [FormComponent],
+  imports: [FormComponent, LoadingComponent],
   templateUrl: './register-page.component.html',
   styles: ``,
 })
 export class RegisterPageComponent {
-  // private readonly activeRouter = inject(ActivatedRoute);
-  // private readonly storeService = inject(StoreService);
-  // public idProduct = this.activeRouter.snapshot.params['id'];
-  // productResources = rxResource({
-  //   request: () => ({ id: this.idProduct }),
-  //   loader: ({ request }) => {
-  //     const { id } = request;
-  //     return this.storeService.getReview(id);
-  //   },
-  // });
+  private readonly storeService = inject(StoreService);
+  public isLoading = signal<boolean>(false);
+  public throwError = signal<string>('');
+
+  registerProduct({ form, images }: SendFormInt) {
+    this.isLoading.set(true);
+    this.storeService.postReview(form, images).subscribe((resp) => {
+      if (!resp.ok) {
+        this.isLoading.set(false);
+        this.throwError.set('Error! No se pudo registrar nuevo producto');
+        setTimeout(() => {
+          this.throwError.set('');
+        }, 2500);
+      }
+      this.isLoading.set(false);
+    });
+  }
 }
