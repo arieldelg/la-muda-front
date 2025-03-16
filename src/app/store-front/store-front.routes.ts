@@ -9,12 +9,16 @@ export const routes: Routes = [
     component: StoreFrontLayoutComponent,
     children: [
       {
-        path: '',
+        path: 'store',
         component: HomePageComponent,
       },
       {
         path: 'store/:id',
         component: ReviewComponent,
+      },
+      {
+        path: '**',
+        redirectTo: 'store',
       },
     ],
   },

@@ -27,7 +27,17 @@
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-bold h-12">Datos generales</h1>
       <div class="flex justify-end h-12">
+        @if (initialValue() && disableButton()) {
+        <button
+          class="btn bg-gray-600 w-40"
+          type="button"
+          (click)="enableForm()"
+        >
+          Editar Producto
+        </button>
+        } @else {
         <button class="btn btn-secondary w-40" type="submit">Guardar</button>
+        }
       </div>
     </div>
     <div class="space-y-1">
@@ -101,6 +111,7 @@
         class="btn btn-secondary join-item"
         type="button"
         (click)="onAddTag()"
+        [disabled]="disableButton()"
       >
         Agregar
       </button>
@@ -123,6 +134,7 @@
           data-dismiss-target="#badge-dismiss-default"
           aria-label="Remove"
           (click)="deleteTag(i)"
+          [disabled]="disableButton()"
         >
           <svg
             class="w-2 h-2"
@@ -155,6 +167,7 @@
       multiple
       class="file-input file-input-bordered w-full"
       (change)="onFilesChanged($event)"
+      [disabled]="disableButton()"
       #inputImg
     />
     <div
@@ -162,7 +175,7 @@
     >
       @for (image of blobImage(); track $index; let i = $index) {
       <img
-        [src]="image"
+        [src]="image | customImage"
         [alt]="i"
         class="w-full h-full object-cover rounded-2xl"
       />
@@ -170,5 +183,3 @@
     </div>
   </div>
 </form>
-
-{{ form.controls["tags"].errors | json }}

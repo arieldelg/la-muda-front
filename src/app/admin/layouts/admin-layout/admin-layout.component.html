@@ -33,7 +33,6 @@
         <a
           [routerLink]="route.path"
           routerLinkActive="bg-gray-100 dark:bg-gray-700"
-          [routerLinkActiveOptions]="{ exact: true }"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
         >
           <mat-icon
@@ -41,12 +40,9 @@
             aria-label="Example home icon"
             [fontIcon]="route.icon"
           ></mat-icon>
-          <span
-            class="ms-3"
-            routerLinkActive="text-secondary"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >{{ route.title }}</span
-          >
+          <span class="ms-3" routerLinkActive="text-secondary">{{
+            route.title
+          }}</span>
         </a>
       </li>
       }

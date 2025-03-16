@@ -1,1 +1,9 @@
-<admin-form />
+@if (isLoading()) {
+<shared-loading />
+} @else { @if (productResource.hasValue()) {
+<admin-form
+  [initialValue]="productResource.value().data"
+  (sendData)="updateData($event)"
+  [inputThrowError]="throwError()"
+/>
+} }

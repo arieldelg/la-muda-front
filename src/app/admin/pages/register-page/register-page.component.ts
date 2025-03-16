@@ -1,7 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormComponent } from '../../components/form/form.component';
 import { StoreService } from '@/stores/services/store.service';
-import { SendFormInt } from '@/stores/interfaces/store.interface';
+import {
+  SendFormInt,
+  SendFormUpdate,
+} from '@/stores/interfaces/store.interface';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 
 @Component({
@@ -15,11 +18,10 @@ export class RegisterPageComponent {
   public isLoading = signal<boolean>(false);
   public throwError = signal<string>('');
 
-  registerProduct({ form, images }: SendFormInt) {
+  registerProduct({ form, images }: SendFormInt | SendFormUpdate) {
     this.isLoading.set(true);
     this.storeService.postReview(form, images).subscribe((resp) => {
       if (!resp.ok) {
-        this.isLoading.set(false);
         this.throwError.set('Error! No se pudo registrar nuevo producto');
         setTimeout(() => {
           this.throwError.set('');

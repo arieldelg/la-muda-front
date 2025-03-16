@@ -41,7 +41,7 @@ export interface PaginationOptions {
 export interface PostOptions {
   badge: string;
   description: string;
-  images: string[];
+  images: Images[];
   tags: string[];
   title: string;
 }
@@ -49,4 +49,10 @@ export interface PostOptions {
 export interface SendFormInt {
   form: PostOptions;
   images: FileList;
+}
+
+export interface SendFormUpdate {
+  form: PostOptions;
+  images?: FileList;
+  imagesDeleted?: string[];
 }

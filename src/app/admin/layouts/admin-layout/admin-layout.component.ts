@@ -29,7 +29,7 @@ export class AdminLayoutComponent {
       icon: 'app_registration',
     },
     {
-      path: '/',
+      path: '/store',
       title: 'Tienda',
       icon: 'home',
     },

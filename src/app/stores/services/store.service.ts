@@ -8,6 +8,7 @@ import {
   ReviewMap,
   ReviewsMap,
   ReviewsResponse,
+  SendFormUpdate,
 } from '../interfaces/store.interface';
 import { environment } from '@/environments/environment';
 import { catchError, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
@@ -59,7 +60,8 @@ export class StoreService {
     if (this.reviewCache.has(id)) {
       return of(this.reviewCache.get(id)!);
     }
-    return this.http.get<Review>(`${environment.API_HOST}/${id}`).pipe(
+
+    return this.http.get<Review>(`${environment.API_HOST}/review/${id}`).pipe(
       tap((resp) => this.reviewCache.set(id, { ok: true, data: resp })),
       map((resp) => ({ ok: true, data: resp })),
       catchError((err) => {
@@ -73,12 +75,7 @@ export class StoreService {
     review: PostOptions,
     imagesFiles?: FileList
   ): Observable<{ ok: boolean; message: string; err?: any }> {
-    // return of({
-    //   ok: false,
-    //   message: 'Error test',
-    //   err: new Error('Es una prueba'),
-    // });
-    return this.uploadImage(imagesFiles!).pipe(
+    return this.uploadImage(imagesFiles).pipe(
       mergeMap((resp) => {
         const tempObject = {
           ...review,
@@ -106,7 +103,39 @@ export class StoreService {
     );
   }
 
-  uploadImage(images: FileList): Observable<{ url: string; id: string }[]> {
+  updateReview(
+    review: SendFormUpdate,
+    reviewId: string
+  ): Observable<{ ok: boolean; message: string; review?: Review }> {
+    const { form, images, imagesDeleted } = review;
+
+    return this.uploadImage(images).pipe(
+      mergeMap((resp) => {
+        let newForm = form;
+        if (resp.length > 0) {
+          newForm = {
+            ...newForm,
+            images: [...newForm.images, ...resp],
+          };
+        }
+        const review = { ...newForm, id: reviewId };
+        return this.http
+          .put<{ ok: boolean; message: string }>(
+            `${environment.API_HOST}/review/${reviewId}`,
+            newForm
+          )
+          .pipe(
+            tap(() => this.updateProductCache(review)),
+            map(({ ok, message }) => ({ ok, message, review })),
+            catchError((err) => of({ ok: err.ok, message: err.message }))
+          );
+      })
+    );
+  }
+
+  private uploadImage(
+    images: FileList | undefined
+  ): Observable<{ url: string; id: string }[]> {
     if (!images || images.length === 0) {
       return of([]);
     }
@@ -118,7 +147,9 @@ export class StoreService {
     return forkJoin(uploadObservables); //* mandas un arreglo de observables y se espera a que todos salgan con éxito (forkJoin)
   }
 
-  uploadSingleImage(file: File): Observable<{ url: string; id: string }> {
+  private uploadSingleImage(
+    file: File
+  ): Observable<{ url: string; id: string }> {
     const formData = new FormData();
     formData.append('files', file);
 
@@ -130,7 +161,7 @@ export class StoreService {
       .pipe(map(([{ id, url }]) => ({ url, id })));
   }
 
-  addProductCache(review: PostResponse) {
+  private addProductCache(review: PostResponse) {
     const { data } = review;
     this.reviewCache.set(data.id, review);
     this.reviewsCache.forEach((productsResponse) => {
@@ -139,7 +170,7 @@ export class StoreService {
     });
   }
 
-  updateProductCache(review: Review) {
+  private updateProductCache(review: Review) {
     const reviewId = review.id;
     this.reviewCache.set(reviewId, { ok: true, data: review });
 
